@@ -22,7 +22,7 @@ CncClock::CncClock()
 void CncClock::LogSystemSetup()
 {
     Logger::Log("OpenGL vendor: ", glGetString(GL_VENDOR), ", version ", glGetString(GL_VERSION), ", renderer ", glGetString(GL_RENDERER));
-    Logger::Log("OpenGL extensions: ", glGetString(GL_EXTENSIONS));
+    Logger::LogDebug("OpenGL extensions: ", glGetString(GL_EXTENSIONS));
 
     GLint maxTextureUnits, maxUniformBlockSize;
     GLint maxVertexUniformBlocks, maxFragmentUniformBlocks;

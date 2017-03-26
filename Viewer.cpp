@@ -143,8 +143,8 @@ void Viewer::UpdateMatrices()
 {
     viewMatrix = glm::lookAtLH(position, target, up);
     perspectiveMatrix = glm::perspectiveLH(glm::radians(fovY), aspectRatio, nearPlane, farPlane);
-    Logger::Log("View Position ", position, ". Target ", target, ". Up ", up, ".");
-    Logger::Log("View Projection: Aspect ", aspectRatio, ". FOV-Y: ", fovY, ". Near Plane: ", nearPlane, ". Far Plane: ", farPlane, ".");
+    Logger::LogDebug("View Position ", position, ". Target ", target, ". Up ", up, ".");
+    Logger::LogDebug("View Projection: Aspect ", aspectRatio, ". FOV-Y: ", fovY, ". Near Plane: ", nearPlane, ". Far Plane: ", farPlane, ".");
 }
 
 void Viewer::CheckMoveAxis(int posKeyId, int negKeyId, float frameTime, float* eye, float* target) const
