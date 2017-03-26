@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="GuCommon\stb\stb_implementations.cpp" />
+    <ClCompile Include="gucommon\logging\Logger.cpp">
+      <Filter>gucommon</Filter>
+    </ClCompile>
+    <ClCompile Include="gucommon\shaders\ShaderFactory.cpp">
+      <Filter>gucommon</Filter>
+    </ClCompile>
+    <ClCompile Include="gucommon\strings\StringUtils.cpp">
+      <Filter>gucommon</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="gucommon">
+      <UniqueIdentifier>{2dde8e8b-faef-43df-90c0-1f15c03252e3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="gucommon\logging\Logger.h">
+      <Filter>gucommon</Filter>
+    </ClInclude>
+    <ClInclude Include="gucommon\shaders\ShaderFactory.h">
+      <Filter>gucommon</Filter>
+    </ClInclude>
+    <ClInclude Include="gucommon\strings\StringUtils.h">
+      <Filter>gucommon</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

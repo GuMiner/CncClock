@@ -1,0 +1,3 @@
+[submodule "gucommon"]
+	path = gucommon
+	url = https://github.com/guminer/gucommon

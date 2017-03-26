@@ -1,0 +1,17 @@
+Clock design program notes:
+-- Box2D for simulation
+Use links for combined gears
+Single shape, many bodies
+Can use a edge as a shape -- but they don't collide with themselves. Will need to use compound shapes (teeth and innards)
+b2_dynamicBody moves in response to forces (create body from definition, create and attach a polygon shape, (create a shape then create a fixture with the shape info)
+iterate at 60 Hz, with at a min 8 velocity, 3 position iterations (double prefered for us)
+Make sure all your edges are longer than b2_linearSlop (5mm).
+bodyDef.allowSleep = true;
+bodyDef.awake = true;
+
+
+-- GLFW / GLEW with raw OpenGL for display 
+-- IMGUI for rendering
+-- (pretty much take the testbed for Box2D and merge it with my basic starting bed)
+-- Keep object sizes from 0.1 to 10 meters (units) in length
+
