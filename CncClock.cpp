@@ -3,19 +3,22 @@
 #include <string>
 #include <thread>
 #include <glm\gtx\transform.hpp>
+#include <imgui\imgui.h>
 #include "logging\Logger.h"
 #include "Input.h"
 #include "version.h"
 #include "CncClock.h"
 
 #pragma comment(lib, "opengl32")
+#pragma comment(lib, "lib/Box2D.lib")
 #pragma comment(lib, "lib/glfw3.lib")
 #pragma comment(lib, "lib/glew32.lib")
+#pragma comment(lib, "lib/imgui.lib")
 #pragma comment(lib, "lib/sfml-system")
 
 CncClock::CncClock() 
-    : shaderFactory(), viewer(),
-      fpsTimeAggregated(0.0f), fpsFramesCounted(0)
+    : shaderFactory(), viewer(), guiRenderer(),
+      fpsTimeAggregated(0.0f), fpsFramesCounted(0), lastFrameRate(60.0f)
 {
 }
 
@@ -48,7 +51,7 @@ bool CncClock::LoadCoreGlslGraphics()
     glfwWindowHint(GLFW_SAMPLES, 8);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-    window = glfwCreateWindow(viewer.ScreenWidth, viewer.ScreenHeight, "Lux", nullptr, nullptr);
+    window = glfwCreateWindow(viewer.ScreenWidth, viewer.ScreenHeight, "CNC Clock", nullptr, nullptr);
     if (!window)
     {
         Logger::LogError("Could not create the GLFW window!");
@@ -74,6 +77,7 @@ bool CncClock::LoadCoreGlslGraphics()
 
     // Enable alpha blending
     glEnable(GL_BLEND);
+    glBlendEquation(GL_FUNC_ADD);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     // Enable line, but not polygon smoothing.
@@ -123,26 +127,31 @@ void CncClock::UpdateFps(float frameTime)
     fpsTimeAggregated += frameTime;
     if (fpsTimeAggregated > 1.0f)
     {
-        std::stringstream framerate;
-        framerate << "FPS: " << (float)((float)fpsFramesCounted / fpsTimeAggregated);
-        //sentenceManager.UpdateSentence(fpsSentenceId, framerate.str());
-
+        lastFrameRate = (float)fpsFramesCounted / (float)fpsTimeAggregated;
         fpsTimeAggregated = 0;
         fpsFramesCounted = 0;
     }
+
+    ImGui::Begin("Stats", nullptr, ImVec2(100, 100), 0.50f);
+    ImGui::SetCursorPos(ImVec2(5, 20));
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.1f", lastFrameRate);
+    ImGui::End();
 }
 
-// TODO hacky code to remove with a redesign. Still prototyping here...
-int gainId = 0;
 void CncClock::Update(float currentTime, float frameTime)
 {
+    guiRenderer.Update(currentTime, frameTime); // Must be before any IMGUI commands are passed in.
     viewer.Update(frameTime);
     
     glm::vec2 screenPos = viewer.GetGridPos(Input::GetMousePos());
-    std::stringstream mousePos;
-    mousePos << screenPos.x << ", " << screenPos.y;
-    //sentenceManager.UpdateSentence(mouseToolTipSentenceId, mousePos.str());
     
+    glm::ivec2 iMousePos = Input::GetMousePos();
+    ImGui::SetNextWindowPos(ImVec2((float)iMousePos.x, (float)iMousePos.y));
+    ImGui::Begin("Mouse Pos", nullptr, ImVec2(100, 100), 0.0f, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
+    ImGui::SetCursorPos(ImVec2(0, 0));
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.1f, %.1f", screenPos.x, screenPos.y);
+    ImGui::End();
+
     UpdateFps(frameTime);
 }
 
@@ -151,18 +160,12 @@ void CncClock::Render(glm::mat4& viewMatrix)
     glm::mat4 projectionMatrix = viewer.perspectiveMatrix * viewMatrix;
 
     // Clear the screen (and depth buffer) before any rendering begins.
-    const GLfloat color[] = { 0, 0, 0, 1 };
+    const GLfloat color[] = { 0, 0.2f, 0, 1 };
     const GLfloat one = 1.0f;
     glClearBufferfv(GL_COLOR, 0, color);
     glClearBufferfv(GL_DEPTH, 0, &one);
 
-    // Render the FPS and our current data transfer rate in the upper-left corner.
-   // float fpsHeight = sentenceManager.GetSentenceDimensions(fpsSentenceId).y;
-   // sentenceManager.RenderSentence(fpsSentenceId, viewer.perspectiveMatrix, glm::translate(glm::vec3(-viewer.GetXSize() / 2.0f, viewer.GetYSize() / 2.0f - (dataSpeedHeight + fpsHeight), 0.0f)) * viewMatrix);
-
-    // Render our mouse tool tip ... at the mouse
-    glm::vec2 screenPos = viewer.GetGridPos(Input::GetMousePos());
-    //sentenceManager.RenderSentence(mouseToolTipSentenceId, viewer.perspectiveMatrix, glm::translate(glm::vec3(screenPos.x, screenPos.y, 0.0f)) * viewMatrix);
+    guiRenderer.Render();
 }
 
 bool CncClock::LoadGraphics()
@@ -172,18 +175,24 @@ bool CncClock::LoadGraphics()
         return false;
     }
 
-    // Load FPS and and a mouse tool tip.
-    //fpsSentenceId = sentenceManager.CreateNewSentence();
-    //sentenceManager.UpdateSentence(fpsSentenceId, "FPS:", 14, glm::vec3(1.0f, 1.0f, 1.0f));
+    if (ImGui::GetIO().Fonts->AddFontFromFileTTF("./fonts/DejaVuSans.ttf", 15.f) == nullptr)
+    {
+        Logger::LogError("Unable to load the custom font for IMGUI to use.");
+        return false;
+    }
 
-    //mouseToolTipSentenceId = sentenceManager.CreateNewSentence();
-   // sentenceManager.UpdateSentence(mouseToolTipSentenceId, "(?,?)", 12, glm::vec3(1.0f, 1.0f, 1.0f));
+    if (!guiRenderer.LoadImGui(window, &shaderFactory))
+    {
+        return false;
+    }
 
     return true;
 }
 
 void CncClock::UnloadGraphics()
 {
+    guiRenderer.UnloadImGui();
+
     glfwDestroyWindow(window);
     window = nullptr;
 }
@@ -192,7 +201,6 @@ bool CncClock::Run()
 {
     float gameTime = 0;
     float lastFrameTime = 0.06f;
-    auto lastQueriedGameTime = std::chrono::high_resolution_clock::now();
 
     bool focusPaused = false;
     bool escapePaused = false;
@@ -210,8 +218,8 @@ bool CncClock::Run()
             glfwSwapBuffers(window);
         }
 
-        auto now = std::chrono::high_resolution_clock::now();
-        lastFrameTime = std::chrono::duration_cast<std::chrono::duration<float>>((now - lastQueriedGameTime)).count();
+        float now = (float)glfwGetTime();
+        lastFrameTime = (now - gameTime);
         gameTime += lastFrameTime;
 
         // Delay to run approximately at our maximum framerate.
@@ -227,36 +235,36 @@ bool CncClock::Run()
 
 int main()
 {
-    Logger::Setup("lux-log.log", true);
-    Logger::Log("Lux ", AutoVersion::MAJOR_VERSION, ".", AutoVersion::MINOR_VERSION);
+    Logger::Setup("cncClock.log", true);
+    Logger::Log("CncClock ", AutoVersion::MAJOR_VERSION, ".", AutoVersion::MINOR_VERSION);
 
-    CncClock* lux = new CncClock();
-    if (!lux->Initialize())
+    CncClock* cncClock = new CncClock();
+    if (!cncClock->Initialize())
     {
         Logger::LogError("CncClock initialization failed!");
     }
     else
     {
         Logger::Log("Basic Initialization complete!");
-        if (!lux->LoadGraphics())
+        if (!cncClock->LoadGraphics())
         {
             Logger::LogError("CncClock graphics initialization failed!");
         }
         else
         {
             Logger::Log("Graphics Initialized!");
-            if (!lux->Run())
+            if (!cncClock->Run())
             {
                 Logger::LogError("CncClock operation failed!");
             }
 
-            lux->UnloadGraphics();
+            cncClock->UnloadGraphics();
         }
 
-        lux->Deinitialize();
+        cncClock->Deinitialize();
     }
 
-    delete lux;
+    delete cncClock;
     Logger::Log("Done.");
     Logger::Shutdown();
     return 0;

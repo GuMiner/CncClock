@@ -12,6 +12,7 @@
     <ClCompile Include="gucommon\shaders\ShaderFactory.cpp" />
     <ClCompile Include="GuCommon\stb\stb_implementations.cpp" />
     <ClCompile Include="gucommon\strings\StringUtils.cpp" />
+    <ClCompile Include="ImguiRenderer.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Viewer.cpp" />
   </ItemGroup>
@@ -20,6 +21,9 @@
     <ClInclude Include="gucommon\logging\Logger.h" />
     <ClInclude Include="gucommon\shaders\ShaderFactory.h" />
     <ClInclude Include="gucommon\strings\StringUtils.h" />
+    <ClInclude Include="IGlfwKeyHandler.h" />
+    <ClInclude Include="IGlfwMouseHandler.h" />
+    <ClInclude Include="ImguiRenderer.h" />
     <ClInclude Include="Input.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="Viewer.h" />

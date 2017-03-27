@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="GuCommon\stb\stb_implementations.cpp" />
     <ClCompile Include="gucommon\logging\Logger.cpp">
       <Filter>gucommon</Filter>
     </ClCompile>
@@ -11,10 +10,24 @@
     <ClCompile Include="gucommon\strings\StringUtils.cpp">
       <Filter>gucommon</Filter>
     </ClCompile>
+    <ClCompile Include="CncClock.cpp" />
+    <ClCompile Include="GuCommon\stb\stb_implementations.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Input.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="Viewer.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="gucommon">
       <UniqueIdentifier>{2dde8e8b-faef-43df-90c0-1f15c03252e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="framework">
+      <UniqueIdentifier>{a944532e-e4ef-42b1-a6e1-6d2593e21296}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -26,6 +39,21 @@
     </ClInclude>
     <ClInclude Include="gucommon\strings\StringUtils.h">
       <Filter>gucommon</Filter>
+    </ClInclude>
+    <ClInclude Include="CncClock.h" />
+    <ClInclude Include="version.h" />
+    <ClInclude Include="Input.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="Viewer.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="ImguiRenderer.h" />
+    <ClInclude Include="IGlfwMouseHandler.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="IGlfwKeyHandler.h">
+      <Filter>framework</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

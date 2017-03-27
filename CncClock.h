@@ -5,20 +5,21 @@
 #include <glm\mat4x4.hpp>
 #include <glm\gtc\quaternion.hpp>
 #include "shaders\ShaderFactory.h"
+#include "ImguiRenderer.h"
 #include "Viewer.h"
 
 class CncClock
 {
     GLFWwindow* window;
     ShaderFactory shaderFactory;
+    ImguiRenderer guiRenderer;
     Viewer viewer;
 
     // Top-level display items.
     float fpsTimeAggregated;
     int fpsFramesCounted;
-    int fpsSentenceId;
-    int dataSpeedSentenceId;
-    int mouseToolTipSentenceId;
+    float lastFrameRate;
+
     void UpdateFps(float frameTime);
 
     bool LoadCoreGlslGraphics();

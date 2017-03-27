@@ -12,6 +12,9 @@ std::set<int> Input::pressedKeysTypeChecked;
 std::set<int> Input::pressedMouseButtons;
 std::set<int> Input::pressedMouseButtonsTypeChecked;
 
+std::vector<IGlfwMouseHandler*> Input::additionalMouseHandlers;
+std::vector<IGlfwKeyHandler*> Input::additionalKeyHandlers;
+
 void Input::SetupErrorCallback()
 {
     glfwSetErrorCallback(Input::LogGlfwErrors);
@@ -26,10 +29,22 @@ void Input::Setup(GLFWwindow* window, Viewer* viewer)
     Input::GlfwWindowResizeCallbacks(window, viewer->ScreenWidth, viewer->ScreenHeight);
 
     glfwSetKeyCallback(window, Input::GlfwKeyCallback);
+    glfwSetCharCallback(window, Input::GlfwCharCallback);
     glfwSetWindowCloseCallback(window, Input::GlfwWindowCloseCallbacks);
     glfwSetWindowFocusCallback(window, Input::GlfwWindowFocusCallbacks);
     glfwSetWindowSizeCallback(window, Input::GlfwWindowResizeCallbacks);
     glfwSetMouseButtonCallback(window, Input::GlfwMouseButtonCallbacks);
+    glfwSetScrollCallback(window, Input::GlfwScrollCallback);
+}
+
+void Input::AddMouseHandler(IGlfwMouseHandler* mouseHandler)
+{
+    additionalMouseHandlers.push_back(mouseHandler);
+}
+
+void Input::AddKeyHandler(IGlfwKeyHandler* keyHandler)
+{
+    additionalKeyHandlers.push_back(keyHandler);
 }
 
 // Logs any errors from GLFW
@@ -57,6 +72,19 @@ void Input::GlfwKeyCallback(GLFWwindow* window, int key, int scancode, int actio
         pressedKeys.erase(key);
         pressedKeysTypeChecked.erase(key);
     }
+
+    for (IGlfwKeyHandler* handler: additionalKeyHandlers)
+    {
+        handler->GlfwKeyCallback(window, key, scancode, action, mods);
+    }
+}
+
+void Input::GlfwCharCallback(GLFWwindow * window, unsigned int character)
+{
+    for (IGlfwKeyHandler* handler : additionalKeyHandlers)
+    {
+        handler->GlfwCharCallback(window, character);
+    }
 }
 
 void Input::GlfwMouseButtonCallbacks(GLFWwindow* window, int button, int action, int mods)
@@ -69,6 +97,19 @@ void Input::GlfwMouseButtonCallbacks(GLFWwindow* window, int button, int action,
     {
         pressedMouseButtons.erase(button);
         pressedMouseButtonsTypeChecked.erase(button);
+    }
+
+    for (IGlfwMouseHandler* handler : additionalMouseHandlers)
+    {
+        handler->GlfwMouseButtonCallbacks(window, button, action, mods);
+    }
+}
+
+void Input::GlfwScrollCallback(GLFWwindow * window, double xoffset, double yoffset)
+{
+    for (IGlfwMouseHandler* handler : additionalMouseHandlers)
+    {
+        handler->GlfwScrollCallback(window, xoffset, yoffset);
     }
 }
 
