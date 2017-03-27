@@ -7,6 +7,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="b2DebugDrawRenderer.cpp" />
     <ClCompile Include="CncClock.cpp" />
     <ClCompile Include="gucommon\logging\Logger.cpp" />
     <ClCompile Include="gucommon\shaders\ShaderFactory.cpp" />
@@ -14,9 +15,11 @@
     <ClCompile Include="gucommon\strings\StringUtils.cpp" />
     <ClCompile Include="ImguiRenderer.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="LineRenderer.cpp" />
     <ClCompile Include="Viewer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="b2DebugDrawRenderer.h" />
     <ClInclude Include="CncClock.h" />
     <ClInclude Include="gucommon\logging\Logger.h" />
     <ClInclude Include="gucommon\shaders\ShaderFactory.h" />
@@ -25,6 +28,7 @@
     <ClInclude Include="IGlfwMouseHandler.h" />
     <ClInclude Include="ImguiRenderer.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="LineRenderer.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="Viewer.h" />
   </ItemGroup>

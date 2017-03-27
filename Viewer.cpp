@@ -19,12 +19,12 @@ Viewer::Viewer()
 
 void Viewer::Update(float frameTime)
 {
-    // This is obsolete as this is effectively a 2D application with 3D graphical aspects.
-    // CheckMoveAxis(GLFW_KEY_W, GLFW_KEY_Q, frameTime, &position.x, &target.x);
-    // CheckMoveAxis(GLFW_KEY_S, GLFW_KEY_X, frameTime, &position.y, &target.y);
-    // CheckMoveAxis(GLFW_KEY_A, GLFW_KEY_Z, frameTime, &position.z, &target.z);
-    // DialVariable(GLFW_KEY_1, GLFW_KEY_2, 0.1f, &fovY);
-    // UpdateMatrices();
+    CheckMoveAxis(GLFW_KEY_W, GLFW_KEY_Q, frameTime, &position.x, &target.x);
+    CheckMoveAxis(GLFW_KEY_S, GLFW_KEY_X, frameTime, &position.y, &target.y);
+    CheckMoveAxis(GLFW_KEY_A, GLFW_KEY_Z, frameTime, &position.z, &target.z);
+
+    UpdateMatrices();
+    RecomputeCache();
 }
 
 void Viewer::SetScreenSize(int width, int height)
@@ -149,7 +149,7 @@ void Viewer::UpdateMatrices()
 
 void Viewer::CheckMoveAxis(int posKeyId, int negKeyId, float frameTime, float* eye, float* target) const
 {
-    const float motionSpeed = 0.5f;
+    const float motionSpeed = 2.0f;
     DialVariable(posKeyId, negKeyId, motionSpeed * frameTime, eye);
     DialVariable(posKeyId, negKeyId, motionSpeed * frameTime, target);
 }

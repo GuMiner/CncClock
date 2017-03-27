@@ -6,7 +6,9 @@
 #include <glm\gtc\quaternion.hpp>
 #include <Box2D\Box2D.h>
 #include "shaders\ShaderFactory.h"
+#include "b2DebugDrawRenderer.h"
 #include "ImguiRenderer.h"
+#include "LineRenderer.h"
 #include "Viewer.h"
 
 class CncClock
@@ -17,6 +19,7 @@ class CncClock
     Viewer viewer;
 
     b2World world;
+    b2DebugDrawRenderer* debugRenderer;
 
     // Top-level display items.
     float fpsTimeAggregated;

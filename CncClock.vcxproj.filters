@@ -21,6 +21,8 @@
       <Filter>framework</Filter>
     </ClCompile>
     <ClCompile Include="ImguiRenderer.cpp" />
+    <ClCompile Include="LineRenderer.cpp" />
+    <ClCompile Include="b2DebugDrawRenderer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="gucommon">
@@ -55,5 +57,7 @@
     <ClInclude Include="IGlfwKeyHandler.h">
       <Filter>framework</Filter>
     </ClInclude>
+    <ClInclude Include="LineRenderer.h" />
+    <ClInclude Include="b2DebugDrawRenderer.h" />
   </ItemGroup>
 </Project>
