@@ -16,9 +16,10 @@
 #pragma comment(lib, "lib/imgui.lib")
 #pragma comment(lib, "lib/sfml-system")
 
-CncClock::CncClock() 
+CncClock::CncClock()
     : shaderFactory(), viewer(), guiRenderer(),
-      fpsTimeAggregated(0.0f), fpsFramesCounted(0), lastFrameRate(60.0f)
+      fpsTimeAggregated(0.0f), fpsFramesCounted(0), lastFrameRate(60.0f),
+      world(b2Vec2(0.0f, -10.0f))
 {
 }
 
@@ -143,16 +144,17 @@ void CncClock::Update(float currentTime, float frameTime)
     guiRenderer.Update(currentTime, frameTime); // Must be before any IMGUI commands are passed in.
     viewer.Update(frameTime);
     
-    glm::vec2 screenPos = viewer.GetGridPos(Input::GetMousePos());
-    
     glm::ivec2 iMousePos = Input::GetMousePos();
+    glm::vec2 gridPos = viewer.GetGridPos(iMousePos);
     ImGui::SetNextWindowPos(ImVec2((float)iMousePos.x, (float)iMousePos.y));
     ImGui::Begin("Mouse Pos", nullptr, ImVec2(100, 100), 0.0f, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
     ImGui::SetCursorPos(ImVec2(0, 0));
-    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.1f, %.1f", screenPos.x, screenPos.y);
+    ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.1f, %.1f", gridPos.x, gridPos.y);
     ImGui::End();
 
     UpdateFps(frameTime);
+
+    world.Step(1.0f / 60.0f, 16, 6);
 }
 
 void CncClock::Render(glm::mat4& viewMatrix)

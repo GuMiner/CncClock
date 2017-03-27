@@ -4,6 +4,7 @@
 #include <GLFW/glfw3.h>
 #include <glm\mat4x4.hpp>
 #include <glm\gtc\quaternion.hpp>
+#include <Box2D\Box2D.h>
 #include "shaders\ShaderFactory.h"
 #include "ImguiRenderer.h"
 #include "Viewer.h"
@@ -14,6 +15,8 @@ class CncClock
     ShaderFactory shaderFactory;
     ImguiRenderer guiRenderer;
     Viewer viewer;
+
+    b2World world;
 
     // Top-level display items.
     float fpsTimeAggregated;
