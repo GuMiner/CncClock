@@ -20,6 +20,7 @@ public:
 
     // Returns true if the point is within the part, false otherwise.
     virtual bool TestPoint(glm::vec2 pos);
-
-    virtual void UpdateUi() = 0;
+    
+    virtual void MovePart(glm::vec2 pos) = 0;
+    virtual void UpdateUi(b2World* world) = 0;
 };

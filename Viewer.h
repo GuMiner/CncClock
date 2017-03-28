@@ -28,6 +28,7 @@ class Viewer
     ViewerCache viewerCache;
     void RecomputeCache();
     glm::vec2 GetLetterboxingScreenOffset();
+    float GetScreenScaleFactor();
 
     bool CheckMoveAxis(int posKeyId, int negKeyId, float frameTime, float* eye, float* target) const;
     bool DialVariable(int posKeyId, int negKeyId, float dialAmount, float* value) const;

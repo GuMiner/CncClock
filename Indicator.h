@@ -5,13 +5,17 @@
 
 class Indicator : public IPart
 {
+    float angle;
     float length;
     float thickness;
+
+    void RecreateBody(b2World* world, glm::vec2 createPos);
 
 public:
     Indicator(b2World* world, glm::vec2 createPos);
 
     // Inherited via IPart
-    virtual void UpdateUi() override;
+    virtual void UpdateUi(b2World* world) override;
+    virtual void MovePart(glm::vec2 pos) override;
 };
 

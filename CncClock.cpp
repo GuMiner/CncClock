@@ -149,14 +149,14 @@ void CncClock::Update(float currentTime, float frameTime)
     glm::vec2 gridPos = viewer.GetGridPos(iMousePos);
     ImGui::SetNextWindowPos(ImVec2((float)iMousePos.x + 20.0f, (float)iMousePos.y));
     ImGui::Begin("Mouse Pos", nullptr, ImVec2(100, 100), 0.0f, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
-    ImGui::SetCursorPos(ImVec2(0, 0));
+    ImGui::SetCursorPos(ImVec2(5, 0));
     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.1f, %.1f", gridPos.x, gridPos.y);
     ImGui::End();
 
     UpdateFps(frameTime);
 
     designMenu.Update(&world);
-    clock.Update(&viewer);
+    clock.Update(&world, &viewer);
 
     world.Step(1.0f / 60.0f, 16, 6);
     
@@ -202,47 +202,6 @@ bool CncClock::LoadGraphics()
     }
 
     debugRenderer = new b2DebugDrawRenderer();
-
-    // Add some test data
-    // Pyramids demo from Box2D tests
-    {
-        b2BodyDef bd;
-        b2Body* ground = world.CreateBody(&bd);
-
-        b2EdgeShape shape;
-        shape.Set(b2Vec2(-40.0f, 0.0f), b2Vec2(40.0f, 0.0f));
-        ground->CreateFixture(&shape, 0.0f);
-    }
-
-    {
-        float32 a = 0.5f;
-        b2PolygonShape shape;
-        shape.SetAsBox(a, a*2);
-
-        b2Vec2 x(-7.0f, 0.75f);
-        b2Vec2 y;
-        b2Vec2 deltaX(0.5625f, 1.25f);
-        b2Vec2 deltaY(1.125f, 0.0f);
-
-        int e_count = 6;
-        for (int32 i = 0; i < e_count; ++i)
-        {
-            y = x;
-
-            for (int32 j = i; j < e_count; ++j)
-            {
-                b2BodyDef bd;
-                bd.type = b2_dynamicBody;
-                bd.position = y;
-                b2Body* body = world.CreateBody(&bd);
-                body->CreateFixture(&shape, 5.0f);
-
-                y += deltaY;
-            }
-
-            x += deltaX;
-        }
-    }
 
     debugRenderer->SetFlags(b2Draw::e_shapeBit | b2Draw::e_jointBit);
     world.SetDebugDraw(debugRenderer);

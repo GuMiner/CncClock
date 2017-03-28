@@ -7,6 +7,7 @@ public:
     Gear();
 
     // Inherited via IPart
-    virtual void UpdateUi() override;
+    virtual void UpdateUi(b2World * world) override;
+    virtual void MovePart(glm::vec2 pos) override;
 };
 

@@ -5,6 +5,10 @@ Gear::Gear()
 {
 }
 
-void Gear::UpdateUi()
+void Gear::UpdateUi(b2World * world)
+{
+}
+
+void Gear::MovePart(glm::vec2 pos)
 {
 }

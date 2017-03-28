@@ -11,7 +11,9 @@ class Clock
     
     glm::vec2 insertPos;
     unsigned int selectedPart;
-    bool pressHandled;
+    bool leftPressHandled;
+
+    bool rightPressHandled;
 
 public:
     Clock();
@@ -19,7 +21,7 @@ public:
     glm::vec2 GetInsertPos() const;
 
     void AddPart(IPart* part);
-    void Update(Viewer* viewer);
+    void Update(b2World* world, Viewer* viewer);
     ~Clock();
 };
 
