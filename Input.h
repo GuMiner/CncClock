@@ -20,12 +20,8 @@ class Input
     // List of pressed keys.
     static std::set<int> pressedKeys;
 
-    // The list of keys that are pressed that were checked.
-    static std::set<int> pressedKeysTypeChecked;
-
     // Same as the key sets, but for mouse buttons.
     static std::set<int> pressedMouseButtons;
-    static std::set<int> pressedMouseButtonsTypeChecked;
 
     static std::vector<IGlfwMouseHandler*> additionalMouseHandlers;
     static std::vector<IGlfwKeyHandler*> additionalKeyHandlers;
@@ -59,12 +55,8 @@ public:
     // Returns true if a key was pressed, false otherwise.
     static bool IsKeyPressed(int keyId);
 
-    // Returns true if a key was pressed and then false until the key is released.
-    static bool IsKeyTyped(int keyId);
-
     // Same as IsKeyPressed ans IsKeyTyped, but with mouse buttons, respectively.
     static bool IsMouseButtonPressed(int mouseButton);
-    static bool IsMouseButtonClicked(int mouseButton);
 
     static glm::ivec2 GetMousePos();
 };

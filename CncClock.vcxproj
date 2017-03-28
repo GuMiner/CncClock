@@ -8,26 +8,36 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="b2DebugDrawRenderer.cpp" />
+    <ClCompile Include="Clock.cpp" />
     <ClCompile Include="CncClock.cpp" />
+    <ClCompile Include="DesignMenu.cpp" />
+    <ClCompile Include="Gear.cpp" />
     <ClCompile Include="gucommon\logging\Logger.cpp" />
     <ClCompile Include="gucommon\shaders\ShaderFactory.cpp" />
     <ClCompile Include="GuCommon\stb\stb_implementations.cpp" />
     <ClCompile Include="gucommon\strings\StringUtils.cpp" />
     <ClCompile Include="ImguiRenderer.cpp" />
+    <ClCompile Include="Indicator.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="IPart.cpp" />
     <ClCompile Include="LineRenderer.cpp" />
     <ClCompile Include="Viewer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="b2DebugDrawRenderer.h" />
+    <ClInclude Include="Clock.h" />
     <ClInclude Include="CncClock.h" />
+    <ClInclude Include="DesignMenu.h" />
+    <ClInclude Include="Gear.h" />
     <ClInclude Include="gucommon\logging\Logger.h" />
     <ClInclude Include="gucommon\shaders\ShaderFactory.h" />
     <ClInclude Include="gucommon\strings\StringUtils.h" />
     <ClInclude Include="IGlfwKeyHandler.h" />
     <ClInclude Include="IGlfwMouseHandler.h" />
     <ClInclude Include="ImguiRenderer.h" />
+    <ClInclude Include="Indicator.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="IPart.h" />
     <ClInclude Include="LineRenderer.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="Viewer.h" />

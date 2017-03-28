@@ -7,6 +7,8 @@
 #include <Box2D\Box2D.h>
 #include "shaders\ShaderFactory.h"
 #include "b2DebugDrawRenderer.h"
+#include "Clock.h"
+#include "DesignMenu.h"
 #include "ImguiRenderer.h"
 #include "LineRenderer.h"
 #include "Viewer.h"
@@ -21,6 +23,11 @@ class CncClock
     b2World world;
     b2DebugDrawRenderer* debugRenderer;
 
+    // Actual clock design data
+    Clock clock;
+    DesignMenu designMenu;
+
+
     // Top-level display items.
     float fpsTimeAggregated;
     int fpsFramesCounted;
@@ -31,7 +38,7 @@ class CncClock
     bool LoadCoreGlslGraphics();
     void LogSystemSetup();
 
-    void HandleEvents(bool& focusPaused, bool& escapePaused);
+    void HandleEvents(bool& focusPaused);
     void Update(float currentTime, float frameTime);
     void Render(glm::mat4& viewMatrix);
 

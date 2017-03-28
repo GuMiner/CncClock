@@ -19,12 +19,15 @@ Viewer::Viewer()
 
 void Viewer::Update(float frameTime)
 {
-    CheckMoveAxis(GLFW_KEY_W, GLFW_KEY_Q, frameTime, &position.x, &target.x);
-    CheckMoveAxis(GLFW_KEY_S, GLFW_KEY_X, frameTime, &position.y, &target.y);
-    CheckMoveAxis(GLFW_KEY_A, GLFW_KEY_Z, frameTime, &position.z, &target.z);
+    bool movedLeftRight = CheckMoveAxis(GLFW_KEY_W, GLFW_KEY_Q, frameTime, &position.x, &target.x);
+    bool movedUpDown = CheckMoveAxis(GLFW_KEY_S, GLFW_KEY_X, frameTime, &position.y, &target.y);
+    bool movedInOut = CheckMoveAxis(GLFW_KEY_A, GLFW_KEY_Z, frameTime, &position.z, &target.z);
 
-    UpdateMatrices();
-    RecomputeCache();
+    if (movedLeftRight || movedUpDown || movedInOut)
+    {
+        UpdateMatrices();
+        RecomputeCache();
+    }
 }
 
 void Viewer::SetScreenSize(int width, int height)
@@ -147,23 +150,36 @@ void Viewer::UpdateMatrices()
     Logger::LogDebug("View Projection: Aspect ", aspectRatio, ". FOV-Y: ", fovY, ". Near Plane: ", nearPlane, ". Far Plane: ", farPlane, ".");
 }
 
-void Viewer::CheckMoveAxis(int posKeyId, int negKeyId, float frameTime, float* eye, float* target) const
+bool Viewer::CheckMoveAxis(int posKeyId, int negKeyId, float frameTime, float* eye, float* target) const
 {
+    bool dialed = false;
     const float motionSpeed = 2.0f;
-    DialVariable(posKeyId, negKeyId, motionSpeed * frameTime, eye);
-    DialVariable(posKeyId, negKeyId, motionSpeed * frameTime, target);
+    if (DialVariable(posKeyId, negKeyId, motionSpeed * frameTime, eye))
+    {
+        dialed = true;
+    }
+    if (DialVariable(posKeyId, negKeyId, motionSpeed * frameTime, target))
+    {
+        dialed = true;
+    }
+
+    return dialed;
 }
 
 // Dials a variable positively or negatively by an amount based on the key pressed.
-void Viewer::DialVariable(int posKeyId, int negKeyId, float dialAmount, float* value) const
+bool Viewer::DialVariable(int posKeyId, int negKeyId, float dialAmount, float* value) const
 {
     if (Input::IsKeyPressed(posKeyId))
     {
         (*value) += dialAmount;
+        return true;
     }
 
     if (Input::IsKeyPressed(negKeyId))
     {
         (*value) -= dialAmount;
+        return true;
     }
+
+    return false;
 }

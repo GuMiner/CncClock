@@ -20,7 +20,8 @@
 CncClock::CncClock()
     : shaderFactory(), viewer(), guiRenderer(),
       fpsTimeAggregated(0.0f), fpsFramesCounted(0), lastFrameRate(60.0f),
-      world(b2Vec2(0.0f, -10.0f))
+      world(b2Vec2(0.0f, -10.0f)),
+      clock(), designMenu(&clock)
 {
 }
 
@@ -116,11 +117,10 @@ void CncClock::Deinitialize()
     glfwTerminate();
 }
 
-void CncClock::HandleEvents(bool& focusPaused, bool& escapePaused)
+void CncClock::HandleEvents(bool& focusPaused)
 {
     glfwPollEvents();
     focusPaused = !Input::hasFocus;
-    escapePaused = Input::IsKeyTyped(GLFW_KEY_ESCAPE);
 }
 
 void CncClock::UpdateFps(float frameTime)
@@ -147,13 +147,16 @@ void CncClock::Update(float currentTime, float frameTime)
     
     glm::ivec2 iMousePos = Input::GetMousePos();
     glm::vec2 gridPos = viewer.GetGridPos(iMousePos);
-    ImGui::SetNextWindowPos(ImVec2((float)iMousePos.x, (float)iMousePos.y));
+    ImGui::SetNextWindowPos(ImVec2((float)iMousePos.x + 20.0f, (float)iMousePos.y));
     ImGui::Begin("Mouse Pos", nullptr, ImVec2(100, 100), 0.0f, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoTitleBar);
     ImGui::SetCursorPos(ImVec2(0, 0));
     ImGui::TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "%.1f, %.1f", gridPos.x, gridPos.y);
     ImGui::End();
 
     UpdateFps(frameTime);
+
+    designMenu.Update(&world);
+    clock.Update(&viewer);
 
     world.Step(1.0f / 60.0f, 16, 6);
     
@@ -214,7 +217,7 @@ bool CncClock::LoadGraphics()
     {
         float32 a = 0.5f;
         b2PolygonShape shape;
-        shape.SetAsBox(a, a);
+        shape.SetAsBox(a, a*2);
 
         b2Vec2 x(-7.0f, 0.75f);
         b2Vec2 y;
@@ -262,14 +265,13 @@ bool CncClock::Run()
     float lastFrameTime = 0.06f;
 
     bool focusPaused = false;
-    bool escapePaused = false;
 
     while (!glfwWindowShouldClose(window))
     {
-        HandleEvents(focusPaused, escapePaused);
+        HandleEvents(focusPaused);
 
         // Run the game and render if not paused.
-        if (!focusPaused && !escapePaused)
+        if (!focusPaused)
         {
             Update(gameTime, lastFrameTime);
 

@@ -29,8 +29,8 @@ class Viewer
     void RecomputeCache();
     glm::vec2 GetLetterboxingScreenOffset();
 
-    void CheckMoveAxis(int posKeyId, int negKeyId, float frameTime, float* eye, float* target) const;
-    void DialVariable(int posKeyId, int negKeyId, float dialAmount, float* value) const;
+    bool CheckMoveAxis(int posKeyId, int negKeyId, float frameTime, float* eye, float* target) const;
+    bool DialVariable(int posKeyId, int negKeyId, float dialAmount, float* value) const;
     void UpdateMatrices();
 
 public:

@@ -20,9 +20,24 @@
     <ClCompile Include="Viewer.cpp">
       <Filter>framework</Filter>
     </ClCompile>
-    <ClCompile Include="ImguiRenderer.cpp" />
     <ClCompile Include="LineRenderer.cpp" />
-    <ClCompile Include="b2DebugDrawRenderer.cpp" />
+    <ClCompile Include="Indicator.cpp">
+      <Filter>parts</Filter>
+    </ClCompile>
+    <ClCompile Include="Clock.cpp" />
+    <ClCompile Include="Gear.cpp">
+      <Filter>parts</Filter>
+    </ClCompile>
+    <ClCompile Include="DesignMenu.cpp" />
+    <ClCompile Include="IPart.cpp">
+      <Filter>parts</Filter>
+    </ClCompile>
+    <ClCompile Include="ImguiRenderer.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
+    <ClCompile Include="b2DebugDrawRenderer.cpp">
+      <Filter>framework</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="gucommon">
@@ -30,6 +45,9 @@
     </Filter>
     <Filter Include="framework">
       <UniqueIdentifier>{a944532e-e4ef-42b1-a6e1-6d2593e21296}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="parts">
+      <UniqueIdentifier>{67a317a3-48ed-4c1a-bc66-03cac6da97af}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -50,7 +68,6 @@
     <ClInclude Include="Viewer.h">
       <Filter>framework</Filter>
     </ClInclude>
-    <ClInclude Include="ImguiRenderer.h" />
     <ClInclude Include="IGlfwMouseHandler.h">
       <Filter>framework</Filter>
     </ClInclude>
@@ -58,6 +75,22 @@
       <Filter>framework</Filter>
     </ClInclude>
     <ClInclude Include="LineRenderer.h" />
-    <ClInclude Include="b2DebugDrawRenderer.h" />
+    <ClInclude Include="Indicator.h">
+      <Filter>parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Clock.h" />
+    <ClInclude Include="IPart.h">
+      <Filter>parts</Filter>
+    </ClInclude>
+    <ClInclude Include="Gear.h">
+      <Filter>parts</Filter>
+    </ClInclude>
+    <ClInclude Include="DesignMenu.h" />
+    <ClInclude Include="ImguiRenderer.h">
+      <Filter>framework</Filter>
+    </ClInclude>
+    <ClInclude Include="b2DebugDrawRenderer.h">
+      <Filter>framework</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

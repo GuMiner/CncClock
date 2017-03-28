@@ -7,10 +7,7 @@ GLFWwindow* Input::window = nullptr;
 Viewer* Input::viewer = nullptr;
 
 std::set<int> Input::pressedKeys;
-std::set<int> Input::pressedKeysTypeChecked;
-
 std::set<int> Input::pressedMouseButtons;
-std::set<int> Input::pressedMouseButtonsTypeChecked;
 
 std::vector<IGlfwMouseHandler*> Input::additionalMouseHandlers;
 std::vector<IGlfwKeyHandler*> Input::additionalKeyHandlers;
@@ -70,7 +67,6 @@ void Input::GlfwKeyCallback(GLFWwindow* window, int key, int scancode, int actio
     else if (action == GLFW_RELEASE)
     {
         pressedKeys.erase(key);
-        pressedKeysTypeChecked.erase(key);
     }
 
     for (IGlfwKeyHandler* handler: additionalKeyHandlers)
@@ -96,7 +92,6 @@ void Input::GlfwMouseButtonCallbacks(GLFWwindow* window, int button, int action,
     else if (action == GLFW_RELEASE)
     {
         pressedMouseButtons.erase(button);
-        pressedMouseButtonsTypeChecked.erase(button);
     }
 
     for (IGlfwMouseHandler* handler : additionalMouseHandlers)
@@ -150,40 +145,9 @@ bool Input::IsKeyPressed(int keyId)
     return pressedKeys.find(keyId) != pressedKeys.end();
 }
 
-// Returns true if a key was pressed and then false until the key is released.
-bool Input::IsKeyTyped(int keyId)
-{
-    // We haven't checked if it has been typed already.
-    if (pressedKeysTypeChecked.find(keyId) == pressedKeysTypeChecked.end())
-    {
-        if (IsKeyPressed(keyId))
-        {
-            pressedKeysTypeChecked.insert(keyId);
-            return true;
-        }
-    }
-
-    return false;
-}
-
 bool Input::IsMouseButtonPressed(int mouseButton)
 {
     return pressedMouseButtons.find(mouseButton) != pressedMouseButtons.end();
-}
-
-bool Input::IsMouseButtonClicked(int mouseButton)
-{
-    // We haven't checked if it has been pressed already.
-    if (pressedMouseButtonsTypeChecked.find(mouseButton) == pressedMouseButtonsTypeChecked.end())
-    {
-        if (IsMouseButtonPressed(mouseButton))
-        {
-            pressedMouseButtonsTypeChecked.insert(mouseButton);
-            return true;
-        }
-    }
-
-    return false;
 }
 
 glm::ivec2 Input::GetMousePos()
