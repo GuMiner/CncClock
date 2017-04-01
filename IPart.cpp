@@ -1,7 +1,7 @@
 #include "IPart.h"
 
 IPart::IPart()
-    : fixtures(), body(nullptr)
+    : fixtures(), body(nullptr), gCodeBody(nullptr)
 {
 }
 

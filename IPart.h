@@ -12,7 +12,7 @@ protected:
     b2Body* body;
 
     // Shapes that only exist for g-code rendering.
-    std::vector<b2Shape*> gCodeShapes;
+    std::vector<b2Shape*> gCodeFixtures;
     b2Body* gCodeBody;
 
 public:

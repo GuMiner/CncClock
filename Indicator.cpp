@@ -2,10 +2,12 @@
 #include "Indicator.h"
 
 Indicator::Indicator(b2World* world, glm::vec2 createPos)
-    : length(8.0f), thickness(0.30f), angle(0.0f), IPart()
+    : length(8.0f), thickness(0.30f), angle(0.0f), indicatorRadius(0.05f), IPart()
 {
     fixtures.push_back(new b2PolygonShape()); // Main body
     fixtures.push_back(new b2PolygonShape()); // Tip
+
+    gCodeFixtures.push_back(new b2CircleShape()); // Indicator punch-thru hole
     
     RecreateBody(world, createPos);
 }
@@ -24,7 +26,7 @@ void Indicator::RecreateBody(b2World* world, glm::vec2 createPos)
     ((b2PolygonShape*)fixtures[1])->Set(&vertices[0], count);
 
     b2BodyDef bodyDef;
-    bodyDef.type = b2_dynamicBody;
+    bodyDef.type = b2BodyType::b2_dynamicBody;
     bodyDef.position = b2Vec2(createPos.x, createPos.y);
     bodyDef.gravityScale = 0.0f;
     
@@ -39,7 +41,30 @@ void Indicator::RecreateBody(b2World* world, glm::vec2 createPos)
         body->CreateFixture(shape, 0.12f); // TODO revisit densities
     }
 
-    body->SetTransform(body->GetTransform().p, angle);
+    body->SetTransform(body->GetTransform().p, angle * 3.1415926535f / 180.0f);
+
+    // Indicator punch to hold the indicator in place
+    ((b2CircleShape*)gCodeFixtures[0])->m_radius = indicatorRadius;
+
+    if (gCodeBody != nullptr)
+    {
+        world->DestroyBody(gCodeBody);
+    }
+
+    bodyDef.type = b2BodyType::b2_dynamicBody;
+    bodyDef.position = b2Vec2(createPos.x, createPos.y);
+    bodyDef.active = false;
+    bodyDef.awake = false;
+    bodyDef.angle = 0;
+    bodyDef.gravityScale = 0.0f;
+
+    gCodeBody = world->CreateBody(&bodyDef);
+    for (b2Shape* shape : gCodeFixtures)
+    {
+        gCodeBody->CreateFixture(shape, 0.12f); // TODO revisit densities
+    }
+
+    gCodeBody->SetTransform(gCodeBody->GetTransform().p, angle * 3.1415926535f / 180.0f);
 }
 
 void Indicator::UpdateUi(b2World* world)
@@ -47,10 +72,10 @@ void Indicator::UpdateUi(b2World* world)
     if (ImGui::Begin("Indicator", nullptr, ImVec2(100, 100), 0.50f))
     {
         ImGui::SetCursorPos(ImVec2(5, 20));
-        ImGui::SliderFloat("Thickness", &thickness, 0.1f, 10.0f);
-        ImGui::SliderFloat("Length", &length, 0.1f, 10.0f);
-        ImGui::SliderFloat("Angle", &angle, 0.0f, 2 * 3.1415926535f);
-        if (ImGui::Button("Apply"))
+        if (ImGui::SliderFloat("Thickness", &thickness, 0.1f, 10.0f) ||
+            ImGui::SliderFloat("Length", &length, 0.1f, 10.0f) ||
+            ImGui::SliderFloat("Angle", &angle, 0.0f, 360.0f) ||
+            ImGui::SliderFloat("IndicatorRadius", &indicatorRadius, 0.05f, thickness / 2.0f))
         {
             RecreateBody(world, glm::vec2(body->GetPosition().x, body->GetPosition().y));
         }
@@ -62,4 +87,5 @@ void Indicator::MovePart(glm::vec2 pos)
 {
     float bodyAngle = body->GetAngle();
     body->SetTransform(b2Vec2(pos.x, pos.y), bodyAngle);
+    gCodeBody->SetTransform(b2Vec2(pos.x, pos.y), bodyAngle);
 }
