@@ -23,7 +23,7 @@ void DesignMenu::Update(b2World* world)
                 
                 if (ImGui::MenuItem("Gear"))
                 {
-                    clock->AddPart(new Gear());
+                    clock->AddPart(new Gear(world, clock->GetInsertPos()));
                 }
 
                 ImGui::EndMenu();

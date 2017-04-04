@@ -15,6 +15,9 @@ protected:
     std::vector<b2Shape*> gCodeFixtures;
     b2Body* gCodeBody;
 
+    void RecreateBodyWithFixtures(b2World* world, glm::vec2 createPos, float angle);
+    void RecreateGCodeBodyWithFixtures(b2World* world, glm::vec2 createPos, float angle);
+
 public:
     IPart();
 
