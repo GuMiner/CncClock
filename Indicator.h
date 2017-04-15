@@ -5,12 +5,11 @@
 
 class Indicator : public IPart
 {
-    float angle;
     float length;
     float thickness;
     float indicatorRadius;
 
-    void RecreateBody(b2World* world, glm::vec2 createPos);
+    void RecreateBody(b2World* world);
 
 public:
     Indicator(b2World* world, glm::vec2 createPos);

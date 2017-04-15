@@ -11,7 +11,9 @@
     <ClCompile Include="Clock.cpp" />
     <ClCompile Include="CncClock.cpp" />
     <ClCompile Include="DesignMenu.cpp" />
+    <ClCompile Include="GCodeExporter.cpp" />
     <ClCompile Include="Gear.cpp" />
+    <ClCompile Include="Ground.cpp" />
     <ClCompile Include="gucommon\logging\Logger.cpp" />
     <ClCompile Include="gucommon\shaders\ShaderFactory.cpp" />
     <ClCompile Include="GuCommon\stb\stb_implementations.cpp" />
@@ -28,7 +30,9 @@
     <ClInclude Include="Clock.h" />
     <ClInclude Include="CncClock.h" />
     <ClInclude Include="DesignMenu.h" />
+    <ClInclude Include="GCodeExporter.h" />
     <ClInclude Include="Gear.h" />
+    <ClInclude Include="Ground.h" />
     <ClInclude Include="gucommon\logging\Logger.h" />
     <ClInclude Include="gucommon\shaders\ShaderFactory.h" />
     <ClInclude Include="gucommon\strings\StringUtils.h" />

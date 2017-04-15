@@ -6,6 +6,7 @@
 #include <glm\gtx\transform.hpp>
 #include <imgui\imgui.h>
 #include "logging\Logger.h"
+#include "Ground.h"
 #include "Input.h"
 #include "version.h"
 #include "CncClock.h"
@@ -109,6 +110,9 @@ bool CncClock::Initialize()
         return false;
     }
 
+    // Setup the world ground.
+    Ground::SetupGround(&world);
+
     return true;
 }
 
@@ -120,7 +124,7 @@ void CncClock::Deinitialize()
 void CncClock::HandleEvents(bool& focusPaused)
 {
     glfwPollEvents();
-    focusPaused = !Input::hasFocus;
+    focusPaused = !Input::hasFocus; Ground::SetupGround(&world);
 }
 
 void CncClock::UpdateFps(float frameTime)
@@ -203,7 +207,7 @@ bool CncClock::LoadGraphics()
 
     debugRenderer = new b2DebugDrawRenderer();
 
-    debugRenderer->SetFlags(b2Draw::e_shapeBit | b2Draw::e_jointBit);
+    debugRenderer->SetFlags(b2Draw::e_shapeBit | b2Draw::e_jointBit | b2Draw::e_pairBit);
     world.SetDebugDraw(debugRenderer);
 
     return true;

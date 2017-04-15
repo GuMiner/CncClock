@@ -3,12 +3,12 @@
 
 Gear::Gear(b2World* world, glm::vec2 createPos)
     : radius(5.0f), generatingCircleRadius(0.25f), centerRadius(0.50f), 
-      teeth(20), divisionsPerHalfTooth(2), isPinion(false), angle(0.0f), IPart()
+      teeth(20), divisionsPerHalfTooth(2), isPinion(false), IPart(createPos, 0.0f)
 {
-    RecreateBody(world, createPos);
+    RecreateBody(world);
 }
 
-void Gear::RecreateBody(b2World* world, glm::vec2 createPos)
+void Gear::RecreateBody(b2World* world)
 {
     fixtures.clear();
     gCodeFixtures.clear();
@@ -49,13 +49,13 @@ void Gear::RecreateBody(b2World* world, glm::vec2 createPos)
     gCodeFixtures.push_back(new b2CircleShape()); // Indicator punch-thru hole
     ((b2CircleShape*)gCodeFixtures[0])->m_radius = centerRadius;
 
-    RecreateBodyWithFixtures(world, createPos, angle);
-    RecreateGCodeBodyWithFixtures(world, createPos, angle);
+    RecreateBodyWithFixtures(world);
+    RecreateGCodeBodyWithFixtures(world);
 }
 
 float Gear::GetCycloidHeight(float dist, float cycloidRadius)
 {
-    return (1 - std::sin((3.141592653589f / 2.0f) - (dist / cycloidRadius))) * cycloidRadius;
+    return std::sin((dist / cycloidRadius) * 3.141592653589f / 2.0f); // (1 - std::sin((3.141592653589f / 2.0f) - (dist / cycloidRadius))) * cycloidRadius;
 }
 
 void Gear::UpdateUi(b2World* world)
@@ -63,15 +63,16 @@ void Gear::UpdateUi(b2World* world)
     if (ImGui::Begin("Gear", nullptr, ImVec2(100, 100), 0.50f))
     {
         ImGui::SetCursorPos(ImVec2(5, 20));
-        if (ImGui::SliderFloat("Radius", &radius, 0.1f, 20.0f) ||
+        if (this->UpdateCommonUi() ||
+            ImGui::SliderFloat("Radius", &radius, 0.1f, 20.0f) ||
             ImGui::SliderFloat("Gen-Cir Radius", &generatingCircleRadius, 0.01f, radius / 2.0f) ||
             ImGui::SliderFloat("Center Radius", &centerRadius, 0.01f, radius) ||
             ImGui::SliderInt("Teeth", &teeth, 2, 1000) ||
             ImGui::SliderInt("Div-Per-Half-Tooth", &divisionsPerHalfTooth, 1, 20) || 
-            ImGui::Checkbox("IsPinion", &isPinion) ||
-            ImGui::SliderFloat("Angle", &angle, 0.0f, 360.0f))
+            ImGui::Checkbox("IsPinion", &isPinion))
         {
-            RecreateBody(world, glm::vec2(body->GetPosition().x, body->GetPosition().y));
+            // currentPosition = glm::vec2(body->GetPosition().x, body->GetPosition().y);
+            RecreateBody(world);
         }
     }
     ImGui::End();

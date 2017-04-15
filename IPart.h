@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <Box2D\Box2D.h>
+#include <imgui\imgui.h>
 #include <glm\vec2.hpp>
 
 // Defines the top-level part in the clock.
@@ -11,15 +12,24 @@ protected:
     std::vector<b2Shape*> fixtures;
     b2Body* body;
 
+    b2RevoluteJoint* fixtureJoint;
+
     // Shapes that only exist for g-code rendering.
     std::vector<b2Shape*> gCodeFixtures;
     b2Body* gCodeBody;
 
-    void RecreateBodyWithFixtures(b2World* world, glm::vec2 createPos, float angle);
-    void RecreateGCodeBodyWithFixtures(b2World* world, glm::vec2 createPos, float angle);
+    bool isFixed;
+    glm::vec2 currentPosition;
+    float angle;
+
+    void RecreateBodyWithFixtures(b2World* world);
+    void RecreateGCodeBodyWithFixtures(b2World* world);
+
+    // Updates UI that is common for all parts.
+    bool UpdateCommonUi();
 
 public:
-    IPart();
+    IPart(glm::vec2 createPos, float angle);
 
     // Returns true if the point is within the part, false otherwise.
     virtual bool TestPoint(glm::vec2 pos);

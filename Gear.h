@@ -5,8 +5,6 @@
 
 class Gear : public IPart
 {
-    float angle;
-
     float radius;
     float generatingCircleRadius;
     float centerRadius;
@@ -14,7 +12,7 @@ class Gear : public IPart
     int divisionsPerHalfTooth;
     bool isPinion;
     
-    void RecreateBody(b2World* world, glm::vec2 createPos);
+    void RecreateBody(b2World* world);
 
     float GetCycloidHeight(float dist, float cycloidRadius);
 

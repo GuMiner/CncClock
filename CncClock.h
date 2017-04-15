@@ -23,10 +23,11 @@ class CncClock
     b2World world;
     b2DebugDrawRenderer* debugRenderer;
 
+    b2Body* groundBody;
+
     // Actual clock design data
     Clock clock;
     DesignMenu designMenu;
-
 
     // Top-level display items.
     float fpsTimeAggregated;

@@ -38,6 +38,8 @@
     <ClCompile Include="b2DebugDrawRenderer.cpp">
       <Filter>framework</Filter>
     </ClCompile>
+    <ClCompile Include="GCodeExporter.cpp" />
+    <ClCompile Include="Ground.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="gucommon">
@@ -92,5 +94,7 @@
     <ClInclude Include="b2DebugDrawRenderer.h">
       <Filter>framework</Filter>
     </ClInclude>
+    <ClInclude Include="GCodeExporter.h" />
+    <ClInclude Include="Ground.h" />
   </ItemGroup>
 </Project>
